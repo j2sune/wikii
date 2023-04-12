@@ -1,0 +1,22 @@
+@use "sass:math";
+
+$browser-context:10;
+
+@function stripUnit($value) {
+  @return math.div($value, $value * 0 + 1);
+}
+@function rem($px,$context:$browser-context) {
+  @return #{math.div(stripUnit($px), stripUnit($context))}rem;
+}
+
+@mixin mobile{
+  @media (max-width: 767px){ 
+    @content;
+  }
+}
+
+@mixin tablet{
+  @media (min-width: 768px) and (max-width: 1023px){
+    @content;
+  }
+}

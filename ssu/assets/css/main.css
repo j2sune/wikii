@@ -1,0 +1,376 @@
+* {
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+}
+
+*,
+:after,
+:before {
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+:root {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+       text-size-adjust: 100%;
+  cursor: default;
+  line-height: 1.5;
+  overflow-wrap: break-word;
+  -moz-tab-size: 4;
+  -o-tab-size: 4;
+     tab-size: 4;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+a {
+  text-decoration: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+html {
+  font-size: 62.5%;
+  overflow-x: hidden;
+}
+
+.hidden {
+  position: absolute;
+  clip: rect(0 0 0 0);
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+}
+
+@-webkit-keyframes fade-in {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+    visibility: hidden;
+  }
+  100% {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+}
+header .left-logo {
+  position: absolute;
+  left: 5%;
+  color: #fff;
+}
+header .left-logo a {
+  display: block;
+  font-size: 2.4rem;
+}
+header .left-logo p {
+  font-size: 1.4rem;
+}
+header .top-wrap, header nav {
+  width: 120rem;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+header .top-wrap {
+  display: flex;
+  justify-content: space-between;
+  color: #fff;
+}
+header .top-wrap .rang {
+  font-size: 1.2rem;
+  height: 3.4rem;
+  overflow: hidden;
+}
+header .top-wrap .rang a {
+  display: block;
+  padding: 0.5rem 1rem 0.5rem 0rem;
+}
+header .top-wrap .logo {
+  font-size: 3.2rem;
+}
+header .top-wrap .right a {
+  display: inline-block;
+  font-size: 1.2rem;
+  padding: 0 0.5rem;
+}
+header nav .menu-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  border-bottom: 1px solid #fff;
+}
+header nav .menu-wrap > li {
+  position: relative;
+}
+header nav .menu-wrap > li > a {
+  display: block;
+  padding: 0.5rem 3rem;
+  font-size: 1.4rem;
+  text-align: center;
+}
+header nav .menu-wrap > li:hover > a {
+  font-weight: 700;
+}
+header nav .menu-wrap > li:hover .sub-menu {
+  opacity: 1;
+  visibility: visible;
+}
+header nav .sub-menu {
+  opacity: 0;
+  visibility: hidden;
+  position: absolute;
+  white-space: nowrap;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -2.4rem;
+}
+header nav .sub-menu li {
+  display: inline-block;
+}
+header nav .sub-menu a {
+  display: block;
+  font-size: 1.2rem;
+  padding: 0 1rem;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  height: auto;
+}
+.container .cont {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+#wrap {
+  width: 100%;
+  height: 100%;
+}
+
+.tit01 {
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 24px;
+  color: #F26E25;
+  letter-spacing: 0.1em;
+}
+
+.intro {
+  width: 100%;
+  height: 100vh;
+  background: salmon;
+}
+
+.sec1 {
+  position: relative;
+  width: 100%;
+  height: 200vh;
+  background: beige;
+}
+
+.sec1 .sec1-txt {
+  /*transform:scale(1.5);*/
+  transition: 0.5s;
+}
+
+.sec1 .tit01 {
+  margin-top: 150px;
+}
+
+.sec1 div {
+  text-align: center;
+}
+
+.sec1 .sec1-top {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  overflow-x: hidden;
+}
+
+.sec1-top .sec1-top-box {
+  position: relative;
+  display: flex;
+  width: 200%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transition: 0.5s;
+}
+
+.sec1-top .sec1-top-box > div {
+  position: relative;
+  width: 50%;
+  height: 100%;
+}
+
+.sec1-top .sec1-top-box > div ~ div {
+  background: #fff;
+}
+
+.sec1-top p {
+  padding-top: 50px;
+}
+
+.sec1-top .back-img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  bottom: 170px;
+  left: 0;
+  transform: scale(0.25);
+  transform-origin: bottom center;
+  background: url(../../assets/img/lazy1.jpg) no-repeat center bottom/cover;
+  transition: 0.5s;
+  z-index: 1;
+}
+
+p {
+  font-size: 20px;
+}
+
+.sec1 .sec1-bottom {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+  z-index: 2;
+  background: transparent;
+}
+
+.sec1-bottom .sec1-bottom-dim {
+  position: absolute;
+  display: block;
+  content: "";
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgb(0, 0, 0);
+  opacity: 0;
+  z-index: 3;
+}
+
+.sec1-bottom p {
+  font-size: 50px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.sec3 {
+  position: relative;
+  width: 100%;
+  height: auto;
+  background: greenyellow;
+  overflow: hidden;
+}
+
+.sec3 .sec3-box {
+  position: relative;
+  left: 0;
+  top: 0;
+  padding: 150px;
+  box-sizing: border-box;
+}
+
+.sec3 .sec3-diag {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 50px;
+  height: 100%;
+}
+
+.sec3-diag .diag-list {
+  background: #fff;
+}
+
+.sec3-diag .diag-list:nth-child(n+2) {
+  margin-top: 200px;
+}
+
+.sec3-diag .diag-list:nth-child(3) {
+  margin-top: 400px;
+}
+
+.sec3-diag .diag-list:nth-child(4) {
+  margin-top: 600px;
+}
+
+.sec4 {
+  padding: 300px 50px;
+}
+
+.sec5 {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+}
+
+.sec5 .sec5-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform: scale(0.5);
+}/*# sourceMappingURL=main.css.map */

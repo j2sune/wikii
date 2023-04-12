@@ -1,0 +1,1399 @@
+/* reset */
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap");
+a, abbr, acronym, address, applet, article, aside, audio, b, big, blockquote, body, canvas, caption, center, cite, code, dd, del, details, dfn, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hgroup, html, i, iframe, img, ins, kbd, label, legend, li, mark, menu, nav, object, ol, output, p, pre, q, ruby, s, samp, section, small, span, strike, strong, sub, summary, sup, table, tbody, td, tfoot, th, thead, time, tr, tt, u, ul, var, video {
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  margin: 0;
+  padding: 0;
+  vertical-align: baseline;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:after, blockquote:before, q:after, q:before {
+  content: "";
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+a {
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+#wrap {
+  width: 100%;
+  height: 100%;
+  background: #ffffff;
+  color: #333;
+}
+
+body {
+  font-family: Noto Sans KR, sans-serif;
+}
+
+body.scrollFix {
+  position: fixed;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+body.bof {
+  overflow: hidden;
+}
+
+.container {
+  padding: 0 10% 50px;
+}
+
+/* common */
+.bundle .bundleCont {
+  margin-top: 40px;
+}
+
+.mainTit {
+  display: inline-block;
+  vertical-align: middle;
+  padding: 2px 4px;
+  margin-top: 80px;
+  font-size: 1.6rem;
+  font-weight: 600;
+  background: #dfd9d1;
+}
+
+.about {
+  display: block;
+  margin-top: 20px;
+  background: none;
+  border: none;
+  font-size: 1rem;
+  color: #333;
+  text-decoration: underline;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+}
+
+.popup .popDim {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.popup .popCont {
+  position: absolute;
+  width: 60%;
+  height: 80%;
+  padding: 30px 20px 50px;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+  background: #fff;
+  box-sizing: border-box;
+  overflow-y: hidden;
+}
+
+.popup.open {
+  display: block;
+}
+
+.popTop {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+  padding: 10px 5px;
+  font-size: 1.2rem;
+  background: #f1ede6;
+}
+
+.aboutBox {
+  margin-top: 10px;
+  padding-bottom: 50px;
+  height: 100%;
+  overflow-y: scroll;
+  box-sizing: border-box;
+}
+
+.aboutBox .aboutList li {
+  margin-top: 20px;
+}
+
+.aboutBox .aboutList img {
+  width: 100%;
+}
+
+.aboutBox p {
+  line-height: 1.6rem;
+}
+
+.aboutBox .aboutTit {
+  font-size: 1rem;
+  text-decoration: underline;
+}
+
+.aboutBox .aboutTit ~ p {
+  margin-top: 20px;
+  color: #4a4a4a;
+}
+
+/* header */
+header {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 90px;
+  background: #f4eeed;
+  z-index: 50;
+}
+
+header:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+header:before {
+  display: block;
+  content: "";
+  position: absolute;
+  top: 90px;
+  left: 0;
+  width: 100%;
+  height: 0;
+  background: #ffffff;
+  border-bottom: 1px solid beige;
+  transition: 0.4s;
+}
+
+header.on:before {
+  height: 200px;
+}
+
+header.on .gnb .gnbListSub {
+  height: 200px;
+}
+
+header h1 {
+  float: left;
+  padding: 37px;
+}
+
+.gnb {
+  float: left;
+  position: relative;
+}
+
+.gnb a {
+  color: #333;
+}
+
+.gnb .gnbList {
+  width: 100%;
+  height: 90px;
+}
+
+.gnb .gnbList:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.gnb .gnbList > li {
+  float: left;
+  position: relative;
+}
+
+.gnb .gnbList > li > a {
+  display: block;
+  padding: 37px 45px;
+  font-weight: bold;
+}
+
+.gnb .gnbList > li.on .gnbListSub {
+  visibility: visible;
+}
+
+.gnb .gnbListSub {
+  width: 100%;
+  position: absolute;
+  top: 90px;
+  left: 0;
+  text-align: center;
+  height: 0;
+  padding: 0;
+  overflow: hidden;
+  visibility: hidden;
+  transition: 0.4s;
+  background: #fff;
+}
+
+.gnb .gnbListSub a {
+  display: block;
+  padding: 10px 0;
+}
+
+.mnavBtn {
+  display: none;
+  float: right;
+}
+
+@media (max-width: 640px) {
+  header {
+    background: #ffffff;
+    border-bottom: 1px solid beige;
+  }
+  header:before {
+    opacity: 0;
+    visibility: hidden;
+    height: 0;
+    transition: 0s;
+  }
+  header.on:before {
+    height: 0;
+  }
+  header.on .gnb .gnbListSub {
+    display: none;
+    height: 0;
+  }
+  .gnb {
+    display: none;
+    position: fixed;
+    float: inherit;
+    top: 0;
+    right: 0;
+    width: 80%;
+    height: 100%;
+    padding: 7 0px 0 0 0;
+    background: #ffffff;
+    z-index: 15;
+    -ms-transform: translateX(100%);
+        transform: translateX(100%);
+    transition: 0.5s;
+  }
+  .gnb.active {
+    display: block;
+    -ms-transform: translateX(0);
+        transform: translateX(0);
+  }
+  .gnb.active + .dim {
+    opacity: 1;
+    visibility: visible;
+  }
+  .gnb .gnbList {
+    float: inherit;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    overflow: scroll;
+  }
+  .gnb .gnbList > li {
+    float: inherit;
+    width: 100%;
+    position: static;
+  }
+  .gnb .gnbList > li > a {
+    padding: 37px 0;
+    text-align: center;
+  }
+  .gnb .gnbList > li .gnbListSub {
+    position: static;
+  }
+  .gnb .gnbList > li.on .gnbListSub {
+    display: block;
+  }
+  .gnb > .mnavBtnBox {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+  }
+  .gnb > .mnavBtnBox .mnavBtn {
+    display: block;
+    margin: 33px 37px;
+    box-sizing: border-box;
+  }
+  .dim {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 12;
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.5s;
+  }
+}
+/* slide */
+.slide {
+  width: 100%;
+  height: 500px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.slide .slideBox {
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  transition: 0.5s;
+}
+
+.slide .slideBox:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.slideBox .slideList {
+  float: left;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center;
+  height: 100%;
+  background: brown;
+}
+
+.slideBox .slideList.slide2 {
+  background: beige;
+}
+
+.slideBox .slideList.slide3 {
+  background: grey;
+}
+
+.slideBox .slideList.slide4 {
+  background: mediumaquamarine;
+}
+
+.slideNum {
+  position: absolute;
+  left: 50%;
+  top: 20px;
+  -ms-transform: translate(-50%, 0);
+      transform: translate(-50%, 0);
+  z-index: 10;
+}
+
+.slideNum > p {
+  padding: 10px 20px;
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.slideBtnBox {
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  left: 0;
+  -ms-transform: translate(0, -50%);
+      transform: translate(0, -50%);
+  padding: 0 20px;
+  box-sizing: border-box;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.slideBtnBox .slideBtn.slideNext {
+  float: right;
+}
+
+.slideBtnBox .slideBtn.disable {
+  opacity: 0.5;
+}
+
+.slidePage {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  -ms-transform: translate(-50%, 0);
+      transform: translate(-50%, 0);
+  z-index: 10;
+}
+
+.slidePageList {
+  overflow: hidden;
+}
+
+.slidePageList:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.slidePageList li {
+  float: left;
+  margin-right: 10px;
+}
+
+.slidePageList li:last-child {
+  margin: 0;
+}
+
+.slidePageList li.slideBon button {
+  background: #000000;
+  color: #ffffff;
+}
+
+.slidePageList li button {
+  display: block;
+  padding: 5px;
+  border: none;
+  box-sizing: border-box;
+}
+
+/* tab */
+.tab {
+  width: 100%;
+  height: auto;
+  margin: 50px 0 0;
+}
+
+.tab .tabList {
+  position: relative;
+  padding-bottom: 50px;
+  overflow: hidden;
+}
+
+.tab .tabList:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.tab .tabList li {
+  float: left;
+  background: skyblue;
+}
+
+.tab .tabList li.tabOn {
+  background: blue;
+}
+
+.tab .tabList li.tabOn > .tabCont {
+  display: block;
+  opacity: 1;
+  visibility: visible;
+}
+
+.tab .tabList .tabMenu {
+  display: block;
+  padding: 20px 20px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.tab .tabList .tabCont {
+  position: absolute;
+  top: 56px;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  opacity: 0;
+  visibility: hidden;
+  display: none;
+  background: greenyellow;
+}
+
+/* accordion */
+.accordionBox {
+  width: 100%;
+}
+
+.accordion {
+  width: 100%;
+  margin: auto;
+}
+
+.accordion a {
+  display: block;
+  color: #333;
+  padding: 10px;
+}
+
+.accordionSub > .accordionTit {
+  width: 100%;
+  position: relative;
+  padding: 15px 10px;
+  background: #f2f2f2;
+  border: none;
+  border-bottom: 1px solid #333;
+  text-align: left;
+}
+
+.accordionSub > .accordionTit:after {
+  position: absolute;
+  display: block;
+  content: "";
+  top: 50%;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  background: url(../img/arrow.png) no-repeat center center/contain;
+  -ms-transform: translate(0, -50%) rotate(180deg);
+      transform: translate(0, -50%) rotate(180deg);
+  transition: 0.5s;
+}
+
+.accordionSub.aaactive > .accordionTit:after {
+  -ms-transform: translate(0, -50%) rotate(0deg);
+      transform: translate(0, -50%) rotate(0deg);
+}
+
+.accordionSub.aaactive > .accordionsub2 {
+  visibility: visible;
+}
+
+.accordionSub > .accordionsub2 {
+  height: 0;
+  visibility: hidden;
+  transition: 0.5s;
+  overflow: hidden;
+}
+
+.accordionSub > .accordionsub2 li {
+  border-bottom: 1px solid #f2f2f2;
+}
+
+/* accordion */
+.arrco2 button {
+  display: block;
+  width: 100%;
+  height: 50px;
+  padding: 0;
+  background: #fff;
+  border: 0;
+  border-bottom: 1px solid rebeccapurple;
+  text-align: left;
+}
+
+.arrco2 button > span {
+  display: block;
+  width: 100%;
+  padding-right: 20px;
+  background: url(../img/arrow2.png) no-repeat center right/20px auto;
+  box-sizing: border-box;
+}
+
+.arrco2 .arrcoCont {
+  display: none;
+  margin: 20px 0;
+  padding: 0 50px;
+}
+
+.arrco2 .allControl {
+  margin-left: 100%;
+  -ms-transform: translateX(-100%);
+      transform: translateX(-100%);
+  width: 100px;
+  padding: 0 10px;
+  background: beige;
+  border: 0;
+}
+
+.arrco2 .allControl .allOpen > span {
+  background-image: url(../img/arrow.png);
+}
+
+.arrcoList.open .arrcoCont {
+  display: block;
+}
+
+.arrcoList.open .arrcoBtn > span {
+  background-image: url(../img/arrow.png);
+}
+
+.arrcoCont:has(img) {
+  color: pink;
+}
+
+.arrco3 {
+  margin-top: 100px;
+}
+
+.arrco3 button {
+  display: block;
+  width: 100%;
+  height: 50px;
+  padding: 0;
+  background: rosybrown;
+  border: 0;
+  border-bottom: 1px solid #000;
+  text-align: left;
+}
+
+.arrco3 .arrcoCont3 {
+  display: none;
+}
+
+.arrcoList3.open > .arrcoCont3 {
+  display: block;
+  margin: 20px 0;
+  padding: 0 50px;
+}
+
+.arrcoList3.open > .arrcoBtn3 span {
+  background-image: url(../img/arrow.png);
+}
+
+/* tooltip */
+.tooltip {
+  position: relative;
+  width: 50%;
+  margin: 50px auto 0;
+  padding: 10px;
+  border: 2px solid #f2f2f2;
+  color: #333333;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+
+.tooltip:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+.tooltip.toolOn .toolpopBox {
+  display: block;
+}
+
+.tooltip .toolTxt {
+  float: left;
+  line-height: 25px;
+}
+
+.tooltip .toolBtn {
+  display: -ms-flexbox;
+  display: flex;
+  float: right;
+  width: 25px;
+  height: 25px;
+  border: 1px solid #333333;
+  border-radius: 50%;
+  background: none;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: center;
+      align-items: center;
+}
+
+.tooltip .toolpopBox {
+  display: none;
+  position: absolute;
+  bottom: -10px;
+  right: 0;
+  -ms-transform: translateY(100%);
+      transform: translateY(100%);
+  padding: 20px;
+  box-sizing: border-box;
+  border-radius: 20px;
+  line-height: 1.2em;
+  box-shadow: 4px 4px 4px 4px rgba(0, 0, 0, 0.5);
+  background: #fff;
+  transition: 0.5s;
+  z-index: 10;
+}
+
+.tooltip .toolpopBox.top {
+  bottom: auto;
+  top: -20px;
+  -ms-transform: translateY(-100%);
+      transform: translateY(-100%);
+}
+
+/* search */
+.search {
+  width: 50%;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.search.searchOn .searchRemove {
+  opacity: 1;
+  visibility: visible;
+}
+
+.search .searchBox {
+  float: left;
+  position: relative;
+  width: calc(100% - 50px);
+}
+
+.search .searchInput {
+  display: block;
+  width: 100%;
+  padding: 10px 0;
+  font-size: 20px;
+  border: 2px solid #f2f2f2;
+  box-sizing: border-box;
+}
+
+.search .searchRemove {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  -ms-transform: translateY(-50%);
+      transform: translateY(-50%);
+  opacity: 0;
+  visibility: hidden;
+}
+
+.search .searchBtn {
+  display: block;
+  float: right;
+  margin-top: 3px;
+  width: 40px;
+  height: 40px;
+  color: #ffffff;
+  border: none;
+  background: #000;
+}
+
+/* sorting */
+.sorting {
+  width: 100%;
+  margin: 50px auto 50px;
+}
+
+.sorting table {
+  width: 100%;
+  text-align: center;
+}
+
+.sorting .sortBtn {
+  display: block;
+  width: 100%;
+  padding: 10px 0;
+  background: #f2f2f2;
+  border: none;
+}
+
+.sorting tr {
+  border-bottom: 1px solid #f2f2f2;
+}
+
+.sorting td {
+  padding: 10px 0;
+}
+
+/* tab2 */
+.tab2 {
+  width: 100%;
+  margin: 50px auto 50px;
+}
+
+.tab2 .tab2list {
+  margin-top: 20px;
+}
+
+.tab2 .tab2list.tab2on .tab2tab {
+  background: plum;
+}
+
+.tab2 .tab2list .tab2tab {
+  display: block;
+  background: #f2f2f2;
+  padding: 20px 0;
+  color: #333333;
+  text-align: center;
+  transition: 0.5s;
+}
+
+.tab2 .tab2list .tab2cont {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.tab2 .tab2list .tab2more > p {
+  margin-top: 10px;
+}
+
+.tab2 .tab2list .tab2more > .tab2txt {
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.tab2 .tab2list img {
+  width: 100%;
+}
+
+/* lazyload */
+.lazyload {
+  margin: 50px auto 0;
+}
+
+.lazyload img {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 10px auto 0;
+  background: #f2f2f2;
+}
+
+/* dropdown */
+.dropDown {
+  margin: 50px auto 50px;
+}
+
+.dropDown.dropOn .optionBox {
+  opacity: 1;
+  visibility: visible;
+}
+
+.dropDown button {
+  margin: auto;
+  display: block;
+  width: 100px;
+  height: 40px;
+  background: #ffffff;
+  border: 1px solid #f2f2f2;
+  box-sizing: border-box;
+}
+
+.dropDown .optionBox {
+  display: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.5s;
+}
+
+.dropDown .optionBox button:hover {
+  background: #f2f2f2;
+}
+
+/* bookmark */
+.bookmark {
+  width: 100%;
+  margin: 50px auto 0;
+  text-align: center;
+}
+
+.bookmark .markbtnBox {
+  padding: 10px 20px 20px;
+  border: 2px solid #f2f2f2;
+  box-sizing: border-box;
+}
+
+.bookmark .markbtnBox .markNull {
+  padding: 40px 0;
+}
+
+.bookmark .markAdd, .bookmark .markInit, .bookmark .markPopBtn button {
+  display: block;
+  padding: 10px 20px;
+  margin: 20px auto 0;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+}
+
+.bookmark .markBtnList, .bookmark .markPopBox .markPop {
+  overflow: hidden;
+}
+
+.bookmark li {
+  float: left;
+  margin: 10px 20px 0 0;
+}
+
+.bookmark .markCheck {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  border-bottom: 2px solid skyblue;
+  box-sizing: border-box;
+  color: #000000;
+}
+
+.bookmark .markBtnList .markCheck {
+  border-bottom: none;
+  background: skyblue;
+}
+
+.bookmark .markBtnList button {
+  margin-left: 5px;
+  background: #fff;
+  color: #000;
+}
+
+.bookmark .markPopWrap {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.bookmark .markPopWrap.markpopOn {
+  display: block;
+}
+
+.bookmark .markPopDim {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: -1;
+}
+
+.bookmark .markPopBox {
+  position: absolute;
+  width: 70%;
+  height: auto;
+  padding: 10px 20px 20px;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+  background: #fff;
+}
+
+.bookmark .markPopBtn {
+  display: inline-block;
+  text-align: center;
+  margin-top: 20px;
+  overflow: hidden;
+}
+
+.bookmark .markPopBtn button {
+  float: left;
+  margin: 0 10px 0 0;
+}
+
+/* tableip */
+.tableip .tableIns {
+  overflow: hidden;
+}
+
+.tableip table {
+  margin-top: 20px;
+}
+
+.tableip .sortBtn2 {
+  display: block;
+  width: 100%;
+  padding: 10px 0;
+  background: #f2f2f2;
+  border: none;
+}
+
+.tableIns input {
+  display: block;
+  float: left;
+  margin: 0 15px 0 0;
+  padding: 0;
+  width: 28%;
+  height: 38px;
+  border: 1px solid #000000;
+  box-sizing: border-box;
+}
+
+.tableIbtn {
+  display: block;
+  margin: 20px auto 0;
+  padding: 10px 20px;
+  background: #000000;
+  color: #ffffff;
+  border: none;
+}
+
+.tableIbtn.tableIadd {
+  float: right;
+  margin: 0;
+}
+
+/* toast */
+.toast {
+  width: 100%;
+  margin: 50px auto 0;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+  -ms-flex-align: center;
+      align-items: center;
+}
+
+.toast button {
+  display: block;
+  padding: 0;
+  width: 15%;
+  height: 38px;
+  background: palevioletred;
+  border: none;
+  box-sizing: border-box;
+  color: #fff;
+  font-weight: bold;
+}
+
+.toastPop {
+  position: fixed;
+  bottom: 30px;
+  right: 20px;
+  overflow: hidden;
+}
+
+.toastPop .toastPopTxt {
+  display: none;
+  padding: 10px 20px;
+  margin-top: 10px;
+  background: #dddddd;
+  border-radius: 20px;
+  box-sizing: border-box;
+  transition: 0.3s;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.toastPop .toastPopTxt.on {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* layerPop */
+.layerPop {
+  margin: 50px auto 0;
+  text-align: center;
+}
+
+.layerPopOpen {
+  width: 200px;
+  height: 50px;
+  background: yellow;
+}
+
+.layerPopBox {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 99;
+}
+
+.layerPopBox .layerDim {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.layerPopBox .layerWrap {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+  width: 500px;
+  height: 500px;
+  background: #fff;
+}
+
+.layerBtn button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+/* category */
+.category {
+  width: 100%;
+  margin: 100px auto 0;
+}
+
+.category .cateList {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-pack: center;
+      justify-content: center;
+  gap: 20px;
+}
+
+.category .cateList button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+}
+
+.category .cateList > li.cateNow button {
+  background: plum;
+  color: #fff;
+}
+
+.category .cateAdd {
+  margin: 5% auto 0;
+  width: 20%;
+  height: 50px;
+  background: #efefef;
+  border-radius: 10px;
+}
+
+.category .cateAdd > button {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: url(../img/plus.png) no-repeat center center/auto 35%;
+}
+
+.category .cateAdd > button span {
+  font-size: 0;
+}
+
+.category .cateCont {
+  width: 100%;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+      align-items: center;
+  -ms-flex-pack: start;
+      justify-content: flex-start;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+  gap: 5%;
+  margin-top: 5%;
+}
+
+.category .cateCont > p {
+  margin: 0 auto;
+  padding: 10rem;
+}
+
+.category .cateDetail {
+  position: relative;
+  width: 30%;
+  height: 340px;
+  padding: 20px;
+  background: #efefef;
+  border-radius: 10px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.category .cateDetail:nth-child(n+4) {
+  margin-top: 5%;
+}
+
+.category .cateDetail.pwError .deleteWrap .errMsg {
+  display: block;
+}
+
+.category .cateDetail img {
+  position: relative;
+  top: 50%;
+  left: 0;
+  -ms-transform: translate(0, -50%);
+      transform: translate(0, -50%);
+  width: 100%;
+  height: auto;
+}
+
+.category .cateDetail .detailImg {
+  position: relative;
+  width: 100%;
+  height: 80%;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.category .cateDetail .detailTit {
+  margin-top: 20px;
+  font-size: 0.9rem;
+}
+
+.category .cateDetail .writeUser {
+  margin-top: 15px;
+  font-size: 0.7rem;
+  vertical-align: top;
+}
+
+.category .cateDetail .writeUser .cateNm {
+  padding-left: 0.5rem;
+  color: blueviolet;
+}
+
+.category .cateDetail .deleteOpen {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+}
+
+.category .cateDetail .deleteWrap {
+  position: absolute;
+  display: none;
+  -ms-flex-direction: column;
+      flex-direction: column;
+  -ms-flex-pack: center;
+      justify-content: center;
+  -ms-flex-align: start;
+      align-items: flex-start;
+  gap: 10px;
+  padding: 20px;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  box-sizing: border-box;
+}
+
+.category .cateDetail .deleteWrap .pwBox {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: justify;
+      justify-content: space-between;
+  -ms-flex-align: center;
+      align-items: center;
+  width: 100%;
+}
+
+.category .cateDetail .deleteWrap input {
+  width: 70%;
+}
+
+.category .cateDetail .deleteWrap .errMsg {
+  display: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: red;
+}
+
+.category .cateDetail .deleteWrap.on {
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.category .cateAddpop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: none;
+  width: 100%;
+  height: 100vh;
+  z-index: 100;
+}
+
+.category .cateAddpop .PopWrap {
+  position: absolute;
+  width: 50%;
+  height: 500px;
+  top: 50%;
+  left: 50%;
+  padding: 20px;
+  -ms-transform: translate(-50%, -50%);
+      transform: translate(-50%, -50%);
+  background: #fff;
+  z-index: 101;
+  box-sizing: border-box;
+}
+
+.category .cateAddpop .popDim {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.category .cateAddpop .popTit {
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+
+.category .cateAddpop .popInfo {
+  padding-top: 50px;
+}
+
+.category .cateAddpop .popInfo p {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+      align-items: center;
+}
+
+.category .cateAddpop .popInfo p ~ p {
+  margin-top: 20px;
+}
+
+.category .cateAddpop .popInfo label {
+  width: 30%;
+}
+
+.category .cateAddpop .popInfo input {
+  width: 70%;
+  padding: 10px;
+  border: 1px solid gray;
+  box-sizing: border-box;
+}
+
+.category .cateAddpop .popBtn {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.category .cateAddpop .popBtn button {
+  width: 50%;
+  height: 50px;
+  border: none;
+  padding: 0;
+  margin: -1px;
+  box-sizing: border-box;
+}
+
+.category .cateAddpop .popBtn button:last-child {
+  background: plum;
+}
+/*# sourceMappingURL=maps/layout.css.map */

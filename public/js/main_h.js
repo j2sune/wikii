@@ -343,7 +343,6 @@ function slide() {
             if (slideClick == true) {
                 slideBox.style.transform = 'translateX(-'+ (slideMove + (clickStart - x.pageX))+'px)';
             }
-            console.log(slideClick)
         })
     })
     

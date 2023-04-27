@@ -349,8 +349,6 @@ function slide() {
     
     slideBox.addEventListener('mouseup', function(e) {
         slideClick = false
-        console.log(slideClick)
-        console.log(e.clientX, e.movementX)
         if (slideClick == false && clickStart > e.clientX) {
             slideNextEvt()
         } else if (slideClick == false && clickStart < e.clientX) {

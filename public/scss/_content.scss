@@ -336,6 +336,9 @@ header {
       display: block; 
       clear: both; 
     }
+    &.nonTrans {
+      transition: 0s;
+    }
   }
 }
 .slideBox {
@@ -345,15 +348,15 @@ header {
     justify-content: center; 
     align-items: center; 
     height: 100%; 
-    background: brown; 
+    background: brown url(../img/1.png) no-repeat center center; 
     &.slide2 { 
-      background: beige; 
+      background: beige url(../img/2.png) no-repeat center center;
     }
     &.slide3 { 
-      background: grey; 
+      background: grey url(../img/3.png) no-repeat center center;
     }
     &.slide4 { 
-      background: mediumaquamarine; 
+      background: mediumaquamarine url(../img/4.png) no-repeat center center;
     }
   }
 }
@@ -419,6 +422,22 @@ header {
       border: none; 
       box-sizing: border-box; 
     }
+  }
+}
+.slideBar {
+  width:100%;
+  position:relative;
+  margin-top:20px;
+  height:5px;
+  background:#f4eeed;
+  overflow:hidden;
+  .bar {
+    position:absolute;
+    top:0;
+    left:0;
+    background:pink;
+    height:100%;
+    transition:.5s;
   }
 }
 

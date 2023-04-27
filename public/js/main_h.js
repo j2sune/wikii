@@ -180,7 +180,7 @@ function slide() {
     const slide = document.querySelector('.slide');
     const slideBox = document.querySelector('.slideBox');
     const slideList = document.getElementsByClassName('slideList');
-    const slideMax = slideList.length - 1;
+    const slideMax = slideList.length;
     const slideW = slide.offsetWidth;
     const nowNum = document.getElementById('nowNum');
     const allNum = document.getElementById('allNum');
@@ -188,65 +188,67 @@ function slide() {
     const slideNext = document.querySelector('.slideNext');
     const slidePage = document.querySelectorAll('.slidePageList li');
     const slidePageBtn = document.querySelectorAll('.slidePageList button');
+    const slideBar = document.querySelector('.slideBar .bar');
     let slideIdx = 0;
+    let slideMove = 0;
+    let barLeft = 0;
+    let complateLoop = true;
+    let slideInterval = true;
 
     slideStart();
-    slideSet(0);
+    slideSet(1);
     slidePageClick();
+    
+    const firstSlide = slideList[0].cloneNode(true)
+    const lastSlide = slideList[slideList.length - 1].cloneNode(true)
+    
+    slideBox.appendChild(firstSlide)
+    slideBox.prepend(lastSlide)
 
     function slideStart() {
-        slideBox.style.width = (slideW * slideList.length) + 'px';
+        slideBox.style.width = (slideW * (slideList.length + 2)) + 'px';
 
         for(f = 0; f < slideList.length; f++) {
             slideList[f].style.width = slideW + 'px';
         } 
         allNum.innerHTML = slideList.length;
+        barLeft = 100 / slideList.length
+        slideBar.style.width = barLeft + '%';
     }
 
     function slideSet(idx) {
-        const slideMove = idx * slideW;
+        if (complateLoop == true) {
+            setTimeout(function() {
+                slideBox.classList.remove('nonTrans')
+                slideBar.style.transition = '0.6s'
+                complateLoop = false
+            }, 500)
+        }
 
-        slideList[idx].classList.add('slideOn');
+        if (idx <= slideMax && idx != 0) {
+            slidePage[idx - 1].classList.add('slideBon');
+            slideList[idx].classList.add('slideOn');
+            slideMove = idx * slideW;
+            nowNum.innerHTML = idx;
+            slideBar.style.left = barLeft * (idx - 1) + '%';
+        } else if (idx == slideMax + 1 ) {
+            slideMove = idx * slideW;
+        }
+         else if (idx == 0) {
+            slideMove = 0 * slideW;
+        }
+
         slideBox.style.transform = 'translateX(-'+slideMove+'px)';
 
-        for(g = 0; g < slidePage.length; g++) {
-            slidePage[idx].classList.add('slideBon');
-        } 
-
         slideIdx = idx;
-
-        nowNum.innerHTML = slideIdx + 1;
-
-        if (slideIdx == 0) {
-            slidePrev.classList.add('disable');
-            slideNext.classList.remove('disable');
-        } else if (slideIdx == slideMax) {
-            slidePrev.classList.remove('disable');
-            slideNext.classList.add('disable');
-        } else if (slideIdx > 0 && slideIdx < slideMax ) {
-            slidePrev.classList.remove('disable');
-            slideNext.classList.remove('disable');
-        }
     }
 
     slidePrev.addEventListener('click', function(){
-        if (slideIdx > 0) {
-            slideSet(slideIdx - 1);
-            slideList[slideIdx + 1].classList.remove('slideOn');
-            slidePage[slideIdx + 1].classList.remove('slideBon');
-        } else {
-            slideSet(0);
-        }
+        slidePrevEvt()
     });
     
     slideNext.addEventListener('click', function(){
-        if (slideIdx < slideMax ) {
-            slideSet(slideIdx + 1);
-            slideList[slideIdx - 1].classList.remove('slideOn');
-            slidePage[slideIdx - 1].classList.remove('slideBon');
-        } else {
-            slideSet(slideMax);
-        } 
+        slideNextEvt()
     });
 
     function slidePageClick() {
@@ -257,11 +259,106 @@ function slide() {
                         slideList[h].classList.remove('slideOn');
                         slidePage[h].classList.remove('slideBon');
                     }
-                    slideSet(pageIdx);
+                    slideSet(pageIdx + 1);
                 }
             })(g);
         }
     }
+
+    function auto() {
+        slideSet(slideIdx)
+        slideNextEvt()
+    }
+
+    function slidePrevEvt() {
+        if (slideIdx > 1) {
+            slideSet(slideIdx - 1);
+            slideList[slideIdx + 1].classList.remove('slideOn');
+            slidePage[slideIdx].classList.remove('slideBon');
+        } else if (slideIdx == 1) {
+            slideList[1].classList.remove('slideOn');
+            slidePage[0].classList.remove('slideBon');
+            slidePage[slidePage.length - 1].classList.add('slideBon');
+            nowNum.innerHTML = slideList.length - 2;
+            slideSet(0);
+
+            slideBar.style.transition = '0s'
+            slideBar.style.left = barLeft * (slideList.length - 3) + '%';
+            setTimeout(function() {
+                slideBox.classList.add('nonTrans')
+                complateLoop = true;
+                slideSet(slideList.length - 2)
+            }, 500)
+        }
+    }
+
+    function slideNextEvt() {
+        if (slideIdx < slideMax) {
+            slideSet(slideIdx + 1);
+            slideList[slideIdx].classList.remove('slideOn');
+            slidePage[slideIdx - 2].classList.remove('slideBon');
+        } else if (slideIdx == slideMax) {
+            slideList[slideList.length - 1].classList.remove('slideOn');
+            slidePage[slidePage.length - 1].classList.remove('slideBon');
+            slidePage[0].classList.add('slideBon');
+            nowNum.innerHTML = 1;
+            slideSet(slideIdx + 1);
+
+            slideBar.style.transition = '0s'
+            slideBar.style.left = '0%';
+            setTimeout(function() {
+                slideBox.classList.add('nonTrans')
+                complateLoop = true;
+                slideSet(1)
+            }, 500)
+        }
+    }
+
+    let autoPlay
+    let slideClick = false;
+    let clickStart;
+
+    autoPlay = setInterval(() => {
+        if (slideInterval == true) {
+            auto()
+        }
+    }, 2000)
+
+    slideBox.addEventListener('mouseover', function() {
+        slideInterval = false
+        clearInterval(autoPlay)
+    })
+
+    slideBox.addEventListener('mouseleave', function() {
+        slideInterval = true
+        autoPlay = setInterval(() => {
+            auto()
+        }, 2000)
+    })
+
+    slideBox.addEventListener('mousedown', function(e) {
+        slideClick = true
+        clickStart = e.clientX
+        slideBox.addEventListener('mousemove', function(x) {
+            if (slideClick == true) {
+                slideBox.style.transform = 'translateX(-'+ (slideMove + (clickStart - x.pageX))+'px)';
+            }
+            console.log(slideClick)
+        })
+    })
+    
+    
+    slideBox.addEventListener('mouseup', function(e) {
+        slideClick = false
+        console.log(slideClick)
+        console.log(e.clientX, e.movementX)
+        if (slideClick == false && clickStart > e.clientX) {
+            slideNextEvt()
+        } else if (slideClick == false && clickStart < e.clientX) {
+            slidePrevEvt()
+        }
+    })
+
 
     /* jQuery
     const slideW = $('.slide').width();

@@ -341,7 +341,11 @@ function slide() {
         clickStart = e.clientX
         slideBox.addEventListener('mousemove', function(x) {
             if (slideClick == true) {
-                slideBox.style.transform = 'translateX(-'+ (slideMove + (clickStart - x.pageX))+'px)';
+                if (clickStart > x.pageX) {
+                    slideBox.style.transform = 'translateX(-'+ (slideMove + (clickStart - x.pageX))+'px)';
+                } else {
+                    slideBox.style.transform = 'translateX(-'+ (slideMove - (x.pageX - clickStart))+'px)';
+                }
             }
         })
     })

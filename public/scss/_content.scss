@@ -1257,3 +1257,20 @@ header {
     }
   }
 }
+
+.scrollBar {
+  width:100%;
+  height:10px;
+  position:fixed;
+  top:90px;
+  left:0;
+  background:#000;
+}
+.scrollPercent {
+  position:absolute;
+  top:0;
+  left:0;
+  width:10%;
+  height:100%;
+  background:blueviolet;
+}

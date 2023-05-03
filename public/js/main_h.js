@@ -179,7 +179,7 @@ function mGnb() {
 function slide() {
     const slide = document.querySelector('.slide');
     const slideBox = document.querySelector('.slideBox');
-    const slideList = document.getElementsByClassName('slideList');
+    const slideList = document.querySelectorAll('.slideList');
     const slideMax = slideList.length;
     const slideW = slide.offsetWidth;
     const nowNum = document.getElementById('nowNum');
@@ -189,7 +189,9 @@ function slide() {
     const slidePage = document.querySelectorAll('.slidePageList li');
     const slidePageBtn = document.querySelectorAll('.slidePageList button');
     const slideBar = document.querySelector('.slideBar .bar');
+    const slideAuto = document.querySelectorAll('.slideAuto button')
     let slideIdx = 0;
+    let activeCont = 0;
     let slideMove = 0;
     let barLeft = 0;
     let complateLoop = true;
@@ -208,15 +210,19 @@ function slide() {
     function slideStart() {
         slideBox.style.width = (slideW * (slideList.length + 2)) + 'px';
 
-        for(f = 0; f < slideList.length; f++) {
-            slideList[f].style.width = slideW + 'px';
-        } 
+        slideList.forEach(function (item, index) {
+            slideList[index].style.width = slideW + 'px';
+        })
+        
         allNum.innerHTML = slideList.length;
         barLeft = 100 / slideList.length
         slideBar.style.width = barLeft + '%';
     }
 
-    function slideSet(idx) {
+    function slideSet(nowIdx) {
+
+        activeCont = nowIdx - 1
+
         if (complateLoop == true) {
             setTimeout(function() {
                 slideBox.classList.remove('nonTrans')
@@ -225,69 +231,74 @@ function slide() {
             }, 500)
         }
 
-        if (idx <= slideMax && idx != 0) {
-            slidePage[idx - 1].classList.add('slideBon');
-            slideList[idx].classList.add('slideOn');
-            slideMove = idx * slideW;
-            nowNum.innerHTML = idx;
-            slideBar.style.left = barLeft * (idx - 1) + '%';
-        } else if (idx == slideMax + 1 ) {
-            slideMove = idx * slideW;
-        }
-         else if (idx == 0) {
-            slideMove = 0 * slideW;
-        }
+        slideList.forEach(function (item, index) {
+            slideList[index].classList.remove('slideOn');
+            slidePage[index].classList.remove('slideBon');
+        })
 
+        slideMove = nowIdx * slideW;
+        nowNum.innerHTML = nowIdx;
+        slideBar.style.left = barLeft * (nowIdx - 1) + '%';
         slideBox.style.transform = 'translateX(-'+slideMove+'px)';
 
-        slideIdx = idx;
+        if (nowIdx <= slideMax && nowIdx != 0) {
+            slidePage[activeCont].classList.add('slideBon');
+            slideList[activeCont].classList.add('slideOn');
+        } else if (nowIdx == slideMax + 1 ) {
+            slidePage[0].classList.add('slideBon');
+            nowNum.innerHTML = 1;
+        }
+         else if (nowIdx == 0) {
+            slidePage[slideMax - 1].classList.add('slideBon');
+            nowNum.innerHTML = slideMax;
+        }
+
+        slideIdx = nowIdx;
     }
 
-    slidePrev.addEventListener('click', function(){
-        slidePrevEvt()
-    });
-    
-    slideNext.addEventListener('click', function(){
-        slideNextEvt()
-    });
+    const slidePrevvv = () => {
+        slidePrevEvt();
+        slidePrev.removeEventListener('click', slidePrevvv);
+        setTimeout(function() {
+            slidePrev.addEventListener('click', slidePrevvv);
+        }, 1000)
+    } 
+
+    const slideNexttt = () => {
+        slideNextEvt();
+        slideNext.removeEventListener('click', slideNexttt);
+        setTimeout(function() {
+            slideNext.addEventListener('click', slideNexttt);
+        }, 1000)
+    } 
+
+    slidePrev.addEventListener('click', slidePrevvv);
+    slideNext.addEventListener('click', slideNexttt);
 
     function slidePageClick() {
-        for (g = 0; g < slidePageBtn.length; g++ ) {
-            (function slidePageIdx(pageIdx) {
-                slidePageBtn[pageIdx].onclick = function() {
-                    for (h = 0; h < slidePage.length; h++) {
-                        slideList[h].classList.remove('slideOn');
-                        slidePage[h].classList.remove('slideBon');
-                    }
-                    slideSet(pageIdx + 1);
-                }
-            })(g);
-        }
+        slidePageBtn.forEach(function(item, idx) {
+            item.addEventListener('click', function() {
+                slideSet(idx + 1);
+            })
+        })
     }
 
     function auto() {
-        slideSet(slideIdx)
         slideNextEvt()
     }
 
     function slidePrevEvt() {
         if (slideIdx > 1) {
             slideSet(slideIdx - 1);
-            slideList[slideIdx + 1].classList.remove('slideOn');
-            slidePage[slideIdx].classList.remove('slideBon');
         } else if (slideIdx == 1) {
-            slideList[1].classList.remove('slideOn');
-            slidePage[0].classList.remove('slideBon');
-            slidePage[slidePage.length - 1].classList.add('slideBon');
-            nowNum.innerHTML = slideList.length - 2;
             slideSet(0);
 
             slideBar.style.transition = '0s'
-            slideBar.style.left = barLeft * (slideList.length - 3) + '%';
+            slideBar.style.left = barLeft * (slideMax - 1) + '%';
             setTimeout(function() {
                 slideBox.classList.add('nonTrans')
                 complateLoop = true;
-                slideSet(slideList.length - 2)
+                slideSet(slideMax)
             }, 500)
         }
     }
@@ -295,17 +306,12 @@ function slide() {
     function slideNextEvt() {
         if (slideIdx < slideMax) {
             slideSet(slideIdx + 1);
-            slideList[slideIdx].classList.remove('slideOn');
-            slidePage[slideIdx - 2].classList.remove('slideBon');
         } else if (slideIdx == slideMax) {
-            slideList[slideList.length - 1].classList.remove('slideOn');
-            slidePage[slidePage.length - 1].classList.remove('slideBon');
-            slidePage[0].classList.add('slideBon');
-            nowNum.innerHTML = 1;
             slideSet(slideIdx + 1);
 
             slideBar.style.transition = '0s'
             slideBar.style.left = '0%';
+
             setTimeout(function() {
                 slideBox.classList.add('nonTrans')
                 complateLoop = true;
@@ -334,6 +340,20 @@ function slide() {
         autoPlay = setInterval(() => {
             auto()
         }, 2000)
+    })
+
+    slideAuto.forEach(function(item) {
+        item.addEventListener('click', function() {
+            if (item.classList.contains('autoStop')) {
+                slideInterval = false
+                clearInterval(autoPlay)
+            } else {
+                slideInterval = true
+                autoPlay = setInterval(() => {
+                    auto()
+                }, 2000)
+            }
+        })
     })
 
     slideBox.addEventListener('mousedown', function(e) {
@@ -1249,8 +1269,6 @@ function category() {
     const cateDetail = document.querySelectorAll('.cateDetail')
     let detailCount = 0;
 
-    console.log(cateDetail)
-
     cateList.forEach(function(list) {
         cateDetail.forEach(function(detail) {
             detail.getAttribute('cate-name')
@@ -1295,6 +1313,15 @@ function category() {
     })
 }
 
+let scrollBar = document.getElementsByClassName('scrollPercent')
+window.addEventListener('scroll', function() {
+    let scPosition = window.scrollY
+    let scHeight = document.documentElement.scrollHeight - window.innerHeight
+    let scPercent = (scPosition / scHeight) * 100
+    
+    scrollBar[0].style.width = scPercent + '%'
+})
+
 var 사람 = {
     name: '손흥민',
     sayHi : function() {
@@ -1313,7 +1340,7 @@ var 자료 = {
     자료.data.forEach((a) => {
         sum += a
     })
-    console.log(sum)
+    //console.log(sum)
 }
 
 전부더하기()
@@ -1335,9 +1362,9 @@ var socks = 100;
 
 function 해체분석기(str, val1, val2) {
     if (val1 == 0) {
-        console.log(str[0] +' 다 팔렸어요' + str[1] + val2)
+        //console.log(str[0] +' 다 팔렸어요' + str[1] + val2)
     } else {
-        console.log(str[0] + val1 + str[1] + val2)
+        //console.log(str[0] + val1 + str[1] + val2)
     }
 }
 해체분석기`바지${pants} 양말${socks}`

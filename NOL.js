@@ -1,283 +1,188 @@
 (function() {
-
     'use strict';
-
-
-
+ 
     const AVAILABLE_FILL = '#1ca814';
-
     const clickedSeats = new Set();
-
     const cooldownSeats = new Map();
-
-
-
+    const prevState = new WeakMap();
+ 
     // alert 자동 닫기
-
     window.alert = function(msg) {
-
         console.log('%c[alert 자동 닫기] ' + msg, 'color: orange');
-
     };
-
     window.confirm = function() { return true; };
-
-
-
-    function isAvailable(seat) {
-
-        if (!seat || !seat.id) return false;
-
-        const cooldownUntil = cooldownSeats.get(seat.id);
-
-        if (cooldownUntil && Date.now() < cooldownUntil) return false;
-
-        if (seat.classList.contains('SeatMap_disabled__AZO_T')) return false;
-
-        const fill = (seat.getAttribute('fill') || '').toLowerCase();
-
-        return fill === AVAILABLE_FILL;
-
-    }
-
-
-
-    function forceClick(seat) {
-
-        if (!isAvailable(seat)) return;
-
-        if (clickedSeats.has(seat.id)) return;
-
-
-
-        clickedSeats.add(seat.id);
-
-        console.log('%c클릭 시도 → ' + seat.id, 'color: #00ff88; font-weight: bold');
-
-
-
-        const rect = seat.getBoundingClientRect();
-
-        const x = rect.left + rect.width / 2;
-
-        const y = rect.top + rect.height / 2;
-
-
-
-        const opts = {
-
-            bubbles: true,
-
-            cancelable: true,
-
-            view: window,
-
-            clientX: x,
-
-            clientY: y,
-
-            button: 0
-
+ 
+    function getSeatInfo(el) {
+        return {
+            id: el.id || '(id 없음)',
+            className: el.className?.baseVal || el.className || '',
+            fill: el.getAttribute('fill') || '',
+            stroke: el.getAttribute('stroke') || '',
+            hasDisabled: el.classList.contains('SeatMap_disabled__AZO_T')
         };
-
-
-
+    }
+ 
+    function logChange(el, oldInfo, newInfo) {
+        const diffs = [];
+        if (oldInfo.className !== newInfo.className) diffs.push(`class: "${oldInfo.className}" → "${newInfo.className}"`);
+        if (oldInfo.fill !== newInfo.fill) diffs.push(`fill: "${oldInfo.fill}" → "${newInfo.fill}"`);
+        if (oldInfo.stroke !== newInfo.stroke) diffs.push(`stroke: "${oldInfo.stroke}" → "${newInfo.stroke}"`);
+        if (diffs.length === 0) return;
+ 
+        const isNowAvailable = !newInfo.hasDisabled && newInfo.fill.toLowerCase() === AVAILABLE_FILL;
+        console.groupCollapsed(
+            `%c[${isNowAvailable ? '🟢 사용가능' : '🔴 변경'}] ${newInfo.id}`,
+            isNowAvailable ? 'color: #00ff88; font-weight: bold' : 'color: #ffcc00'
+        );
+        diffs.forEach(d => console.log('  • ' + d));
+        console.log('요소:', el);
+        console.groupEnd();
+    }
+ 
+    function isAvailable(seat) {
+        if (!seat || !seat.id) return false;
+        const cooldownUntil = cooldownSeats.get(seat.id);
+        if (cooldownUntil && Date.now() < cooldownUntil) return false;
+        if (seat.classList.contains('SeatMap_disabled__AZO_T')) return false;
+        const fill = (seat.getAttribute('fill') || '').toLowerCase();
+        return fill === AVAILABLE_FILL;
+    }
+ 
+    function forceClick(seat) {
+        if (!isAvailable(seat)) return;
+        if (clickedSeats.has(seat.id)) return;
+ 
+        clickedSeats.add(seat.id);
+        console.log('%c👉 클릭 시도 → ' + seat.id, 'color: #00ff88; font-weight: bold');
+ 
+        const rect = seat.getBoundingClientRect();
+        const opts = {
+            bubbles: true, cancelable: true, view: window,
+            clientX: rect.left + rect.width / 2,
+            clientY: rect.top + rect.height / 2,
+            button: 0
+        };
+ 
         seat.dispatchEvent(new MouseEvent('mouseover', opts));
-
         seat.dispatchEvent(new MouseEvent('mousedown', opts));
-
         seat.dispatchEvent(new MouseEvent('mouseup', opts));
-
         seat.dispatchEvent(new MouseEvent('click', opts));
-
         try { seat.click(); } catch(e) {}
-
-
-
+ 
         setTimeout(() => {
-
             clickedSeats.delete(seat.id);
-
             if (!isAvailable(seat)) {
-
-                console.log('%c선점 실패 → 3초 쿨다운 ' + seat.id, 'color: #ff6b6b');
-
+                console.log('%c❌ 선점 실패 → 3초 쿨다운 ' + seat.id, 'color: #ff6b6b');
                 cooldownSeats.set(seat.id, Date.now() + 3000);
-
             }
-
         }, 1000);
-
     }
-
-
-
-    // ========== 자동 좌우 스크롤 ==========
-
-    let scrollDirection = 1; // 1: 오른쪽, -1: 왼쪽
-
+ 
+    // ========== 짧은 좌우 흔들기 ==========
+    let scrollDirection = 1;
     let scrollContainer = null;
-
-
-
-    // 스크롤 가능한 컨테이너 찾기
-
+    let baseScrollLeft = null;   // 네가 정해놓은 기준 위치
+    const SHAKE_DISTANCE = 80;  // 좌우로 흔드는 거리 (픽셀) - 필요하면 조절
+ 
     function findScrollContainer() {
-
-        // 일반적인 좌석맵 스크롤 컨테이너 후보들
-
-        const candidates = [
-
-            document.querySelector('.SeatMap'),
-
-            document.querySelector('[class*="SeatMap"]'),
-
-            document.querySelector('[class*="seat-map"]'),
-
-            document.querySelector('[class*="seatmap"]'),
-
-            document.querySelector('svg')?.parentElement,
-
-            document.querySelector('.scroll-container'),
-
-            document.scrollingElement
-
-        ];
-
-
-
-        for (const el of candidates) {
-
-            if (el && (el.scrollWidth > el.clientWidth || el.scrollHeight > el.clientHeight)) {
-
-                return el;
-
-            }
-
-        }
-
-        return document.scrollingElement || document.documentElement;
-
-    }
-
-
-
-    function autoScroll() {
-
-        if (!scrollContainer) {
-
-            scrollContainer = findScrollContainer();
-
-        }
-
-
-
-        if (!scrollContainer) return;
-
-
-
-        const maxScrollLeft = scrollContainer.scrollWidth - scrollContainer.clientWidth;
-
-        if (maxScrollLeft <= 0) return; // 스크롤할 필요 없음
-
-
-
-        // 끝까지 가면 방향 전환
-
-        if (scrollContainer.scrollLeft >= maxScrollLeft - 5) {
-
-            scrollDirection = -1;
-
-        } else if (scrollContainer.scrollLeft <= 5) {
-
-            scrollDirection = 1;
-
-        }
-
-
-
-        // 스크롤 이동 (속도 조절 가능)
-
-        scrollContainer.scrollBy({
-
-            left: 120 * scrollDirection,  // 한 번에 움직이는 거리
-
-            behavior: 'auto'              // smooth 쓰면 느려짐
-
-        });
-
-    }
-
-
-
-    // 스크롤 주기 (ms) - 너무 빠르면 오히려 렉 날 수 있음
-
-    setInterval(autoScroll, 300);
-
-
-
-    // ========== 좌석 감시 ==========
-
-    const observer = new MutationObserver((mutations) => {
-
-        for (const m of mutations) {
-
-            if (m.type === 'attributes') {
-
-                const el = m.target;
-
-                if (el.matches?.('circle.js-seat, [id^="seat_block_"]')) {
-
-                    forceClick(el);
-
+        const all = document.querySelectorAll('*');
+        let best = null;
+        let maxDiff = 0;
+ 
+        for (const el of all) {
+            const diff = el.scrollWidth - el.clientWidth;
+            if (diff > maxDiff && diff > 30) {
+                const style = getComputedStyle(el);
+                if (['auto', 'scroll', 'overlay'].includes(style.overflowX) || 
+                    ['auto', 'scroll', 'overlay'].includes(style.overflow)) {
+                    maxDiff = diff;
+                    best = el;
                 }
-
             }
-
-            if (m.addedNodes.length) {
-
-                m.addedNodes.forEach(node => {
-
-                    if (node.nodeType === 1) {
-
-                        if (node.matches?.('circle.js-seat, [id^="seat_block_"]')) forceClick(node);
-
-                        node.querySelectorAll?.('circle.js-seat, [id^="seat_block_"]').forEach(forceClick);
-
-                    }
-
-                });
-
-            }
-
         }
-
+ 
+        if (!best) {
+            let el = document.querySelector('svg');
+            while (el) {
+                if (el.scrollWidth > el.clientWidth + 30) {
+                    best = el;
+                    break;
+                }
+                el = el.parentElement;
+            }
+        }
+        return best || document.scrollingElement || document.documentElement;
+    }
+ 
+    function autoScroll() {
+        if (!scrollContainer) {
+            scrollContainer = findScrollContainer();
+            if (scrollContainer) {
+                baseScrollLeft = scrollContainer.scrollLeft;  // 현재 위치를 기준으로 저장
+                console.log('%c스크롤 대상 찾음 (기준 위치 저장됨)', 'color: #00bfff; font-weight: bold');
+            } else {
+                return;
+            }
+        }
+ 
+        // 기준 위치에서 좌우로만 짧게 움직임
+        const target = baseScrollLeft + (scrollDirection * SHAKE_DISTANCE);
+        scrollContainer.scrollLeft = target;
+ 
+        // 방향 전환
+        scrollDirection *= -1;
+    }
+ 
+    setInterval(autoScroll, 400);  // 0.4초마다 짧게 흔들림
+ 
+    // ========== 좌석 감시 ==========
+    const observer = new MutationObserver((mutations) => {
+        for (const m of mutations) {
+            if (m.type === 'attributes') {
+                const el = m.target;
+                if (!el.matches?.('circle.js-seat, [id^="seat_block_"]')) continue;
+ 
+                const oldInfo = prevState.get(el) || {};
+                const newInfo = getSeatInfo(el);
+                if (JSON.stringify(oldInfo) !== JSON.stringify(newInfo)) {
+                    logChange(el, oldInfo, newInfo);
+                    prevState.set(el, newInfo);
+                }
+                forceClick(el);
+            }
+ 
+            if (m.addedNodes.length) {
+                m.addedNodes.forEach(node => {
+                    if (node.nodeType !== 1) return;
+                    const seats = [];
+                    if (node.matches?.('circle.js-seat, [id^="seat_block_"]')) seats.push(node);
+                    node.querySelectorAll?.('circle.js-seat, [id^="seat_block_"]').forEach(s => seats.push(s));
+                    seats.forEach(seat => {
+                        const info = getSeatInfo(seat);
+                        logChange(seat, {}, info);
+                        prevState.set(seat, info);
+                        forceClick(seat);
+                    });
+                });
+            }
+        }
     });
-
-
-
+ 
     observer.observe(document.querySelector('svg') || document.body, {
-
         childList: true,
-
         subtree: true,
-
         attributes: true,
-
         attributeFilter: ['class', 'fill', 'stroke']
-
     });
-
-
-
+ 
+    document.querySelectorAll('circle.js-seat, [id^="seat_block_"]').forEach(el => {
+        prevState.set(el, getSeatInfo(el));
+    });
+ 
     setInterval(() => {
-
         document.querySelectorAll('circle.js-seat:not(.SeatMap_disabled__AZO_T)').forEach(forceClick);
-
     }, 40);
-
-
-
-    console.log('%c오토클릭 + 자동 좌우 스크롤 작동 중', 'color: #00ff88; font-weight: bold');
-
+ 
+    console.log('%c✅ 짧은 흔들기 스크롤 + 오토클릭 작동 중', 'color: #00ff88; font-weight: bold');
+    console.log('사용법: 원하는 위치로 직접 맞춰놓고 이 스크립트 실행');
 })();
